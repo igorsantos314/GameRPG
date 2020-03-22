@@ -1,6 +1,6 @@
 class Personagem:
 
-    def __init__(self, name, power=0, force=0, xp=0, life=0):
+    def __init__(self, name, power=0, force=0, xp=0, life=0, damage=0):
         self.name = name
         self.power = power
         self.force = force
@@ -37,12 +37,13 @@ class Personagem:
 
 class Arqueiro(Personagem):
 
-    def __init__(self, name, power=300, force=200, xp=300, life=1000):
+    def __init__(self, name, power=300, force=200, xp=300, life=1000, damage=50):
         self.name = name
         self.power = power
         self.force = force
         self.xp = xp
         self.life = life
+        self.damage = damage
 
     def getType(self):
         return '|ARQUEIRO|'
@@ -50,12 +51,13 @@ class Arqueiro(Personagem):
 
 class Guerreiro(Personagem):
 
-    def __init__(self, name, power=250, force=450, xp=225, life=1000):
+    def __init__(self, name, power=250, force=450, xp=225, life=1000, damage=50):
         self.name = name
         self.power = power
         self.force = force
         self.xp = xp
         self.life = life
+        self.damage = damage
 
     def getType(self):
         return '|GUERREIRO|'
