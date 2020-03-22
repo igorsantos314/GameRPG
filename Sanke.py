@@ -15,7 +15,10 @@ global posFoodX
 global posFoodY
 
 global lblFood
+
+global lblSnake
 global snake
+snake = '*'
 
 global points
 points = 0
@@ -84,8 +87,7 @@ def startBall(position):
     global IncreaseY
 
     global snake
-
-    snake = '*'
+    global lblSnake
 
     #initialitazion sanke
     posX = 500
@@ -95,14 +97,14 @@ def startBall(position):
     IncreaseY = 0
 
     #create snake
-    lblBall = Label(text=snake, bg='black', fg='red', font='Arial 20 bold')
+    lblSnake = Label(text=snake, bg='black', fg='red', font='Arial 20 bold')
 
     #create food
     createFood()
 
     #movimentation of snake
     while True:
-        lblBall.place(x=posX, y=posY)
+        lblSnake.place(x=posX, y=posY)
 
         posX += IncreaseX
         posY += IncreaseY
@@ -118,8 +120,14 @@ def ballDirection(position):
     global IncreaseX
     global IncreaseY
 
+    global snake
+    global lblSnake
+
     if position == 1:
         #right
+
+        snake = '<'
+
         IncreaseY = 0
         IncreaseX = -10
 
@@ -128,15 +136,23 @@ def ballDirection(position):
         IncreaseY = 0
         IncreaseX = 10
 
+        snake = '>'
+
     elif position == 3:
         #top
         IncreaseX = 0
         IncreaseY = -10
+
+        snake = '^'
     
     elif position == 4:
         #down
         IncreaseX = 0
         IncreaseY = 10
+
+        snake = 'v'
+
+    lblSnake['text'] = snake
 
 def createFood():
 
@@ -169,11 +185,14 @@ def checkPosition():
     global points
     global lblPoints
 
+    global snake
+    global lblSnake
+
     #diference of points FOOD and SNAKE
     deltaPositionX = abs(posX - posFoodX)
     deltaPositionY = abs(posY - posFoodY)
 
-    print('Dif X: {}; Dif Y: {}'.format(deltaPositionX, deltaPositionY))
+    #print('Dif X: {}; Dif Y: {}'.format(deltaPositionX, deltaPositionY))
 
     #restart game
     if posX > 980 or posY > 660 or posX < 20 or posY < 20:
@@ -187,14 +206,15 @@ def checkPosition():
         messagebox.showerror('','You Lose !')    
 
     #create new food
-    elif deltaPositionX < 10 and deltaPositionY < 10:
+    elif deltaPositionX < 15 and deltaPositionY < 15:
         lblFood.destroy()
         createFood()
 
         #update points
         points += 1
-
         lblPoints['text'] = '{}'.format(points)
+
+        #add size of snake
     
 def panelPoints():
 
