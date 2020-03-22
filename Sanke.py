@@ -15,6 +15,10 @@ global posFoodX
 global posFoodY
 
 global lblFood
+global snake
+
+global points
+points = 0
 
 def main():
     global window
@@ -23,6 +27,7 @@ def main():
     window = Tk()
     window.geometry("1000x680")
     window['bg'] = 'black'
+    window.title('SNAKE')
 
     btStart = Button(text='START', command=lambda: th.start_new_thread(startBall, (0,)) )
     btStart.pack()
@@ -39,8 +44,9 @@ def controls():
 
     windowControls = Tk()
     windowControls.geometry('250x170')
+    windowControls.title('Controls')
     windowControls['bg'] = 'black'
-
+    
     #controls
     btRight = Button(windowControls, text='RIGHT', width=4, height=1, command=lambda: th.start_new_thread(ballDirection, (1,)))
     btRight.place(x=20, y=60)
@@ -65,8 +71,11 @@ def controls():
 
 def startBall(position):
 
-    #panel of control
+    #panel of controls
     th.start_new_thread(controls, ())
+
+    #panel of points
+    th.start_new_thread(panelPoints, ())
 
     global posX
     global posY
@@ -91,6 +100,7 @@ def startBall(position):
     #create food
     createFood()
 
+    #movimentation of snake
     while True:
         lblBall.place(x=posX, y=posY)
 
@@ -154,7 +164,12 @@ def checkPosition():
     global posFoodY
 
     global lblFood
+    global snake
 
+    global points
+    global lblPoints
+
+    #diference of points FOOD and SNAKE
     deltaPositionX = abs(posX - posFoodX)
     deltaPositionY = abs(posY - posFoodY)
 
@@ -162,6 +177,7 @@ def checkPosition():
 
     #restart game
     if posX > 980 or posY > 660 or posX < 20 or posY < 20:
+        #restart
         posX = 250
         posY = 250
 
@@ -170,9 +186,31 @@ def checkPosition():
 
         messagebox.showerror('','You Lose !')    
 
+    #create new food
     elif deltaPositionX < 10 and deltaPositionY < 10:
-        print("match found")
         lblFood.destroy()
         createFood()
+
+        #update points
+        points += 1
+
+        lblPoints['text'] = '{}'.format(points)
     
+def panelPoints():
+
+    global points
+    global lblPoints
+
+    windowPoints = Tk()
+    windowPoints.title('POINTS')
+    windowPoints['bg'] = 'black'
+
+    lbl = Label(windowPoints, text='PONTOS:', font='Arial 20 bold', bg='black', fg='white')
+    lbl.pack(side=LEFT)
+
+    lblPoints = Label(windowPoints, text='{}'.format(points), font='Arial 20 bold', bg='black', fg='yellow')
+    lblPoints.pack(side=RIGHT)
+
+    windowPoints.mainloop()
+
 main()
